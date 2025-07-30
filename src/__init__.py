@@ -9,7 +9,7 @@ from ovos_workshop.skills import OVOSSkill
 DEFAULT_SETTINGS = {
     "setting1": True,
     "setting2": 50,
-    "setting3": "test"
+    "setting3": "test2"
 }
 
 class MeePiIntents(OVOSSkill):
