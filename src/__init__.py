@@ -1,32 +1,38 @@
 from ovos_utils import classproperty
 from ovos_utils.process_utils import RuntimeRequirements
-from ovos_workshop.intents import IntentBuilder
 from ovos_workshop.decorators import intent_handler
-# from ovos_workshop.intents import IntentHandler # Uncomment to use Adapt intents
 from ovos_workshop.skills import OVOSSkill
 
-# Optional - if you want to populate settings.json with default values, do so here
+# import os
+# import json
+# from datetime import datetime
+# import numpy as np
+# from sentence_transformers import SentenceTransformer
+
+# NTR data and tuning parameters in <NTR_Skill>/settings.json
 DEFAULT_SETTINGS = {
-    "setting1": True,
-    "setting2": 50,
-    "setting3": "test2"
+    "embeddings_path": "/home/ovos/NTR-Data/MeePiEmbeddings.npy",
+    "memories_data_path": "/home/ovos/NTR-Data/MeePiMemories.json",
+    "mee_image_path": "/home/ovos/NTR-Data/cover.jpg",
+    "media_folder": "/home/ovos/MeePi_Media",
+    "display_mee_image":  True,
+    "fallback_friendly": False,  # True to quietly pass unknowns on to AI Brain
+    # Tuning parameters (from CONFIG in Python script)
+    "top_n": 5,  # Number of top results to return
+    "similarity_threshold": 0.32,  # Minimum similarity score to consider a match
+    "model_name": "all-MiniLM-L6-v2"  # Embedding model
 }
 
+
 class MeePiIntents(OVOSSkill):
-    def __init__(self, *args, bus=None, **kwargs):
+    def __init__(self, *args, **kwargs):
         """The __init__ method is called when the Skill is first constructed.
         Note that self.bus, self.skill_id, self.settings, and
-
-        This is a good place to load and pre-process any data needed by your
-        Skill, ideally after the super() call.
+        other base class settings are only available after the call to super().
         """
-        super().__init__(*args, bus=bus, **kwargs)
+        super().__init__(*args, **kwargs)
         self.learning = True
-
-    def initialize(self):
-        # merge default settings
-        # self.settings is a jsondb, which extends the dict class and adds helpers like merge
-        self.settings.merge(DEFAULT_SETTINGS, new_only=True)
+        self.is_reciting = False
 
     @classproperty
     def runtime_requirements(self):
@@ -36,40 +42,38 @@ class MeePiIntents(OVOSSkill):
             gui_before_load=False,
             requires_internet=False,
             requires_network=False,
-            requires_gui=False,
+            requires_gui=True,
             no_internet_fallback=True,
             no_network_fallback=True,
             no_gui_fallback=True,
         )
 
-    @property
-    def my_setting(self):
-        """Dynamically get the my_setting from the skill settings file.
-        If it doesn't exist, return the default value.
-        This will reflect live changes to settings.json files (local or from backend)
-        """
-        return self.settings.get("my_setting", "default_value")
+    def initialize(self):
+        # merge default settings
+        # self.settings is a jsondb, which extends the dict class and adds helpers like merge
+        self.settings.merge(DEFAULT_SETTINGS, new_only=True)
+        # set a callback to be called when settings are changed
+        # self.settings_change_callback = self.on_settings_changed
 
-    @intent_handler("HowAreYou.intent")
-    def handle_how_are_you_intent(self, message):
-        """This is a Padatious intent handler.
-        It is triggered using a list of sample phrases."""
-        self.speak_dialog("hello_world")
+        # self.load_databanks()
+        self.speak("Near Total Recall Stub is up and ready!")
+        self.log.info("Done with Initialize - Stub #5")
 
-    @intent_handler(IntentBuilder("HelloWorldIntent").require("HelloWorldKeyword"))
-    def handle_hello_world_intent(self, message):
-        """This is an Adapt intent handler, it is triggered by a keyword.
-        Skills can log useful information. These will appear in the CLI and
-        the skills.log file."""
-        self.log.info("There are five types of log messages: " "info, debug, warning, error, and exception.")
-        self.speak_dialog("hello_world")
+    def on_settings_changed(self):
+        """This method is called when the skill settings are changed."""
+        self.log.info("Settings changed!")
 
-    @intent_handler(IntentBuilder("RoboticsLawsIntent").require("LawKeyword").build())
-    def handle_robotic_laws_intent(self, message):
-        """This is an Adapt intent handler, but using a RegEx intent."""
-        # Optionally, get the RegEx group from the intent message
-        # law = str(message.data.get("LawOfRobotics", "all"))
-        self.speak_dialog("robotics")
+    @intent_handler("DoYouRecall.intent")
+    def handle_do_you_recall_intent(self, message):
+        self.speak("Near Total Recall Test - Do You Recall Intent")
+        self.speak_dialog("I should recall a memory but I'm a stub")
+        return
+
+    @intent_handler("MemoryChecker.intent")
+    def handle_memory_checker_intent(self, message):
+        self.speak("Near Total Recall Test - Memory Checker Intent")
+        self.speak_dialog("I can't remember anything")
+        return
 
     def stop(self):
         """Optional action to take when "stop" is requested by the user.
@@ -77,4 +81,10 @@ class MeePiIntents(OVOSSkill):
         False (or None) otherwise.
         If not relevant to your skill, feel free to remove.
         """
-        return
+        if self.is_reciting:
+            self.speak("")  # Stop MeePi from talking
+            self.is_reciting = False
+            self.speak_dialog("stopped_talking.dialog")  # Feedback
+            self.log.info("MeePi was interrupted by user.")
+            return True  # Indicate that MeePi stopped
+        return False  # Nothing was interrupted
