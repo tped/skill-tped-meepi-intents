@@ -3,11 +3,13 @@
     "url": "https://github.com/tped/skill-tped-meepi-intents",
     "summary": "",
     "short_description": null,
-    "description": "Information about your skill",
+    "description": "Someone in OVOS-land does not like NearTotalRecall intents ... this stub will hopefully help find the culprit and clear the path to ensure MemoryPalace intents will also work",
     "examples": [
-        "Hello world",
-        "How are you?",
-        "Thank you"
+        "Tell me about {query}",
+        "What do you remember about {query}",
+        "What do you recall about {query}",
+        "Do you recall {query}",
+        "Do you remember {query}"
     ],
     "desktopFile": false,
     "warning": "",
@@ -47,5 +49,5 @@
     "skillname": "skill-tped-meepi-intents",
     "authorname": "tped",
     "foldername": null,
-    "ovosskill": "Introductory Skill so that Skill Authors can see how an OVOS Skill is put together"
+    "ovosskill": "I'm just a stub of MeePi - only intents'"
 }
