@@ -66,13 +66,19 @@ class MeePiIntents(OVOSSkill):
     @intent_handler("DoYouRecall.intent")
     def handle_do_you_recall_intent(self, message):
         self.speak("Near Total Recall Test - Do You Recall Intent")
-        self.speak_dialog("I should recall a memory but I'm a stub")
+        self.speak("I should recall a memory but I'm a stub")
         return
 
     @intent_handler("MemoryChecker.intent")
     def handle_memory_checker_intent(self, message):
         self.speak("Near Total Recall Test - Memory Checker Intent")
-        self.speak_dialog("I can't remember anything")
+        self.speak("I'm a tub!   I can't remember anything")
+        return
+
+    @intent_handler("MemoryPalace.intent")
+    def handle_memory_palace_intent(self, message):
+        self.speak("Near Total Recall Test - Memory Palace Intent")
+        self.speak("I should have a visual to share by my mind is blank")
         return
 
     def stop(self):

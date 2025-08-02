@@ -6,7 +6,7 @@ I'm just a stub of MeePi - only intents'
 
 Someone in OVOS-land does not like NearTotalRecall intents 
 ... this stub will hopefully help find the culprit 
-and clear the path to ensure MemoryPalace intents will also work   
+and test to ensure proposed MemoryPalace intents will also work   
 
 ## Examples
 
