@@ -3,7 +3,7 @@
     "url": "https://github.com/tped/skill-tped-meepi-intents",
     "summary": "",
     "short_description": null,
-    "description": "Someone in OVOS-land does not like NearTotalRecall intents ... this stub will hopefully help find the culprit and clear the path to ensure MemoryPalace intents will also work",
+    "description": "Someone in OVOS-land does not like NearTotalRecall intents ... this stub will hopefully help find the culprit and test to ensure proposed MemoryPalace intents will also work",
     "examples": [
         "Tell me about {query}",
         "What do you remember about {query}",
