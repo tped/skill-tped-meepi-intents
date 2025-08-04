@@ -72,7 +72,7 @@ class MeePiIntents(OVOSSkill):
     @intent_handler("MemoryChecker.intent")
     def handle_memory_checker_intent(self, message):
         self.speak("Near Total Recall Test - Memory Checker Intent")
-        self.speak("I'm a tub!   I can't remember anything")
+        self.speak("I'm a stub!   I can't remember anything")
         return
 
     @intent_handler("MemoryPalace.intent")
